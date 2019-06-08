@@ -25,61 +25,118 @@ fed$desB12_17 <- NA
 for(i in 1:nrow(fed)) {
   
   # Set 94-97
-  if (fed$PERIODA[i] == "Atlanta Empowerment Zone" | fed$PERIODA[i] == "Empowerment Zone (Round I)")  {
-    fed$desig94_97[i] <- "EMPZ"
-    if (fed$PERIODA[i] == "Atlanta Empowerment Zone") {
-      fed$desB94_97[i] <- "ATL"
-    } else {
-      fed$desB94_97[i] <- "None"
-    }
-  } else if (fed$PERIODA[i] == "Enhanced Enterprise Community (Round I)" | fed$PERIODA[i] == "Enterprise Community (Round I)") {
-    fed$desig94_97[i] <- "ENTC" 
-    if (fed$PERIODA[i] == "Enhanced Enterprise Community (Round I)") {
-      fed$desB94_97[i] <- "ENH"
-    } else {
-      fed$desB94_97[i] <- "None"
-    }
+  if (fed$PERIODA[i] == "Atlanta Empowerment Zone" |
+      fed$PERIODA[i] == "Empowerment Zone (Round I)") {
+        fed$desig94_97[i] <- "EMPZ"
+        if (fed$PERIODA[i] == "Atlanta Empowerment Zone") {
+          fed$desB94_97[i] <- "ATL"
+        } else {
+          fed$desB94_97[i] <- "None"
+        }
+  } else if (fed$PERIODA[i] == "Enhanced Enterprise Community (Round I)" |
+             fed$PERIODA[i] == "Enterprise Community (Round I)") {
+      fed$desig94_97[i] <- "ENTC" 
+      if (fed$PERIODA[i] == "Enhanced Enterprise Community (Round I)") {
+        fed$desB94_97[i] <- "ENH"
+      } else {
+        fed$desB94_97[i] <- "None"
+      }
   } else if (fed$PERIODA[i] == "None") {
-    fed$desig94_97[i] <- "None"
-    fed$desB94_97[i] <- "None"
+      fed$desig94_97[i] <- "None"
+      fed$desB94_97[i] <- "None"
   }
 
   # Set 98-99
   if (fed$PERIODB[i] == "DC Enterprise Zone beginning 1-1-1998") {
-    fed$desig98_99[i] <- "EMPZ" 
-    fed$ desB98_99[i] <- "DC"
+      fed$desig98_99[i] <- "EMPZ" 
+      fed$ desB98_99[i] <- "DC"
   } else {
-    fed$desig98_99[i] <- fed$desig94_97[i]
-    fed$desB98_99[i] <- fed$desB94_97[i]
+      fed$desig98_99[i] <- fed$desig94_97[i]
+      fed$desB98_99[i] <- fed$desB94_97[i]
   }
   
-  if (is.na(fed$desig94_97[i]) | is.na(fed$desB94_97[i]) | is.na(fed$desig98_99[i]) | is.na(fed$desB98_99[i])) {
-    print(i)
+  if (is.na(fed$desig94_97[i]) |
+      is.na(fed$desB94_97[i]) |
+      is.na(fed$desig98_99[i]) |
+      is.na(fed$desB98_99[i])) {
+        print(i)
   }
   
   # Set 00-01
-  if (fed$PERIODB[i] == "Atlanta Empowerment Zone" | fed$PERIODB[i] == "DC Enterprise Zone beginning 1-1-1998" | fed$PERIODB[i] == "Empowerment Zone (Round I)" | fed$PERIODB[i] == "Empowerment Zone (Round I) Beginning Jan. 1, 2000" | fed$PERIODB[i] == "Empowerment Zone (Round I) Beginning Jan. 1, 2000; Enterprise Community (Round I)" | fed$PERIODB[i] == "Empowerment Zone (Round II)" | fed$PERIODB[i] == "Empowerment Zone (Round II); Enhanced Enterprise Community (Round I)" | fed$PERIODB[i] == "Empowerment Zone (Round II); Enterprise Community (Round I)" )  {
-    fed$desig00_01[i] <- "EMPZ"
-    if (fed$PERIODB[i] == "Atlanta Empowerment Zone") {
-      fed$desB00_01[i] <- "ATL"
-    } else if (fed$PERIODB[i] == "DC Enterprise Zone beginning 1-1-1998") {
-      fed$desB00_01[i] <- "DC"
-    } else {
-      fed$desB00_01[i] <- "None"
-    }
-    
-    if (fed$PERIODB[i] == "Empowerment Zone (Round II); Enhanced Enterprise Community (Round I)" | fed$PERIODB[i] == "Empowerment Zone (Round II); Enterprise Community (Round I)") {
-      if (fed$desig98_99[i] != "ENTC") {
-        print(paste("line ", i, " has A-B ENTC mismatch"))
-      }
-      if (fed$PERIODB[i] == "Empowerment Zone (Round II); Enhanced Enterprise Community (Round I)" & fed$desB98_99[i] != "ENH") {
-        print(paste("line", i, "has A-B ENHANCED subdes mismatch"))
-      }
-    }
+  if (fed$PERIODB[i] == "Atlanta Empowerment Zone" |
+      fed$PERIODB[i] == "DC Enterprise Zone beginning 1-1-1998" |
+      fed$PERIODB[i] == "Empowerment Zone (Round I)" |
+      fed$PERIODB[i] == "Empowerment Zone (Round I) Beginning Jan. 1, 2000" |
+      fed$PERIODB[i] == "Empowerment Zone (Round I) Beginning Jan. 1, 2000; Enterprise Community (Round I)" |
+      fed$PERIODB[i] == "Empowerment Zone (Round II)" |
+      fed$PERIODB[i] == "Empowerment Zone (Round II); Enhanced Enterprise Community (Round I)" |
+      fed$PERIODB[i] == "Empowerment Zone (Round II); Enterprise Community (Round I)" )  {
+        fed$desig00_01[i] <- "EMPZ"
+        if (fed$PERIODB[i] == "Atlanta Empowerment Zone") {
+              fed$desB00_01[i] <- "ATL"
+        } else if (fed$PERIODB[i] == "DC Enterprise Zone beginning 1-1-1998") {
+              fed$desB00_01[i] <- "DC"
+        } else {
+              fed$desB00_01[i] <- "None"
+        }
+        
+        if (fed$PERIODB[i] == "Empowerment Zone (Round II); Enhanced Enterprise Community (Round I)" |
+            fed$PERIODB[i] == "Empowerment Zone (Round II); Enterprise Community (Round I)") {
+          if (fed$desig98_99[i] != "ENTC") {
+            print(paste("line ", i, " has A-B ENTC mismatch"))
+          }
+          if (fed$PERIODB[i] == "Empowerment Zone (Round II); Enhanced Enterprise Community (Round I)" &
+              fed$desB98_99[i] != "ENH") {
+                print(paste("line", i, "has A-B ENHANCED subdes mismatch"))
+          }
+        }
+  } else if (fed$PERIODB[i] == "Enterprise Community (Round I)"|
+             fed$PERIODB[i] == "Enterprise Community (Round II)") {
+      fed$desig00_01[i] <- "ENTC"
+      fed$desB00_01[i] <- "None"   
   } else {
-    fed$desig00_01[i] <- "ENTC"
-    fed$desB00_01[i] <- "None"
+      fed$desig00_01[i] <- "None"
+      fed$desB00_01[i] <- "None"
   }
 
+  # Set 02-04
+  if (fed$PERIODC[i] == "DC Enterprise Zone ending 12-31-09" |
+      fed$PERIODC[i] == "Empowerment Zone (Round I)" |
+      fed$PERIODB[i] == "Empowerment Zone (Round II)" |
+      fed$PERIODB[i] == "Empowerment Zone (Round III)" |
+      fed$PERIODB[i] == "Empowerment Zone (Round III); Enterprise Community (Round II)" )  {
+        fed$desig02_04[i] <- "EMPZ"
+        if (fed$PERIODC[i] == "DC Enterprise Zone ending 12-31-09") {
+          fed$desB02_04[i] <- "DC"
+        } else {
+          fed$desB02_04[i] <- "None"
+        }
+        if (fed$PERIODC[i] == "Empowerment Zone (Round III); Enterprise Community (Round II)") {
+          if (fed$desig00_01[i] != "ENTC") {
+            print(paste("line ", i, " has B-C ENTC mismatch"))
+          }
+        }
+  } else if (fed$PERIODC[i] == "Enhanced Enterprise Community (Round I) Ending 12-31-04; Empowerment Zone (Round II)" |
+             fed$PERIODC[i] == "Enterprise Community (Round I) Ending 12-31-04; Empowerment Zone (Round I)" |
+             fed$PERIODC[i] == "Enterprise Community (Round I) Ending 12-31-04; Empowerment Zone (Round II)" |
+             fed$PERIODC[i] == "Enterprise Community (Round I) Ending 12-31-04; Empowerment Zone (Round III)" |
+             fed$PERIODC[i] == "Enterprise Community (Round II)") {
+        fed$desig02_04[i] <- "ENTC"
+        if (fed$PERIODC[i] == "Enhanced Enterprise Community (Round I) Ending 12-31-04; Empowerment Zone (Round II)") {
+          fed$desB02_04[i] <- "ENH"
+        }
+  } else if (fed$PERIODC[i]=="Renewal Community") {
+      fed$desig02_04[i] <- "RC"
+      fed$desB02_04[i] <- "None"    
+  } else {
+      fed$desig02_04[i] <- "None"
+      fed$desB02_04[i] <- "None"
+  }
 }
 
+zones <- aggregate(fed, by=list(fed$FULLNAME), FUN = return)
+
+# Generate alluvial diagram
+library(ggplot2)
+library(ggalluvial)
+head(fed, n=100)
