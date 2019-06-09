@@ -139,4 +139,16 @@ zones <- aggregate(fed, by=list(fed$FULLNAME), FUN = return)
 # Generate alluvial diagram
 library(ggplot2)
 library(ggalluvial)
-head(fed, n=100)
+library(tidyverse)
+
+fed %>%
+  group_by(desig94_97, desig98_99, desig00_01, desig02_04) %>%
+  count()  %>%
+#  is_alluvia_form(axes = 1:4, silent = TRUE)
+  ggplot(aes(y = n, axis1=desig94_97, axis2=desig98_99, axis3=desig00_01, axis4=desig02_04) )+ 
+           geom_alluvium(aes(fill = desig94_97), width=1/12) + 
+           geom_stratum(width = 1/12, fill="black", color="grey") + 
+           geom_label(stat = "stratum", label.strata = TRUE) + 
+           scale_x_discrete(limits = c("1994", "1998", "2000", "2002"), expand = c(.05, .05)) +
+           scale_fill_brewer(type="qual", palette = "Set1") + 
+           ggtitle("Federal zone type flow, 1994-2004")
