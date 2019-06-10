@@ -228,7 +228,7 @@ fed %>%
   count()  %>%
 #  is_alluvia_form(axes = 1:4, silent = TRUE)
   ggplot(aes(y = n, axis1=desig94_97, axis2=desig98_99, axis3=desig00_01, axis4=factor(desig02_04, levels=c("EMPZ", "ENTC", "RC", "None")), axis5=desig05_09, axis6=desig10_11, axis7=desig12_17) )+ 
-           geom_alluvium(aes(fill = desig02_04), width=1/12) + 
+           geom_alluvium(aes(fill = desig02_04), width=1/12, show.legend = FALSE) + 
            geom_stratum(width = 1/12, fill=alpha(0.8), color="grey") + 
            geom_label(stat = "stratum", label.strata = TRUE) + 
            scale_x_discrete(limits = c("1994", "1998", "2000", "2002", "2005", "2010", "2012"), expand = c(.05, .05)) +
