@@ -210,14 +210,13 @@ for(i in 1:nrow(fed)) {
 
 #zones <- aggregate(fed, by=list(fed$FULLNAME), FUN = return)
 zoneranks <- c("EMPZ", "Retro EMPZ", "ENTC", "RC", "None")
-levels(fed$desig94_97) <- zoneranks
-levels(fed$desig98_99) <- zoneranks
-levels(fed$desig00_01) <- zoneranks
-levels(fed$desig02_04) <- zoneranks
-levels(fed$desig05_09) <- zoneranks
-levels(fed$desig10_11) <- zoneranks
-levels(fed$desig12_17) <- zoneranks
-
+fed$desig94_97 <- factor(fed$desig94_97, levels = zoneranks)
+fed$desig98_99 <- factor(fed$desig98_99, levels = zoneranks)
+fed$desig00_01 <- factor(fed$desig00_01, levels = zoneranks)
+fed$desig02_04 <- factor(fed$desig02_04, levels = zoneranks)
+fed$desig05_09 <- factor(fed$desig05_09, levels = zoneranks)
+fed$desig10_11 <- factor(fed$desig10_11, levels = zoneranks)
+fed$desig12_17 <- factor(fed$desig12_17, levels = zoneranks)
 
 # Generate alluvial diagram
 library(ggplot2)
@@ -229,8 +228,8 @@ fed %>%
   count()  %>%
 #  is_alluvia_form(axes = 1:4, silent = TRUE)
   ggplot(aes(y = n, axis1=desig94_97, axis2=desig98_99, axis3=desig00_01, axis4=factor(desig02_04, levels=c("EMPZ", "ENTC", "RC", "None")), axis5=desig05_09, axis6=desig10_11, axis7=desig12_17) )+ 
-           geom_alluvium(aes(fill = desig94_97), width=1/12) + 
-           geom_stratum(width = 1/12, fill=alpha(0.5), color="grey") + 
+           geom_alluvium(aes(fill = desig02_04), width=1/12) + 
+           geom_stratum(width = 1/12, fill=alpha(0.8), color="grey") + 
            geom_label(stat = "stratum", label.strata = TRUE) + 
            scale_x_discrete(limits = c("1994", "1998", "2000", "2002", "2005", "2010", "2012"), expand = c(.05, .05)) +
            scale_fill_brewer(type="qual", palette = "Set1") + 
