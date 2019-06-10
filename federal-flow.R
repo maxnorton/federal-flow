@@ -137,6 +137,48 @@ for(i in 1:nrow(fed)) {
       fed$desB02_04[i] <- "None"
   }
   
+  # Set 05-09
+  if (fed$PERIODC[i] == "DC Enterprise Zone ending 12-31-09" |
+      fed$PERIODC[i] == "Empowerment Zone (Round I)" |
+      fed$PERIODC[i] == "Empowerment Zone (Round II)" |
+      fed$PERIODC[i] == "Empowerment Zone (Round III)" |
+      fed$PERIODC[i] == "Empowerment Zone (Round III); Enterprise Community (Round II)" |
+      fed$PERIODC[i] == "Enhanced Enterprise Community (Round I) Ending 12-31-04; Empowerment Zone (Round II)" |
+      fed$PERIODC[i] == "Enterprise Community (Round I) Ending 12-31-04; Empowerment Zone (Round I)" |
+      fed$PERIODC[i] == "Enterprise Community (Round I) Ending 12-31-04; Empowerment Zone (Round II)" |
+      fed$PERIODC[i] == "Enterprise Community (Round I) Ending 12-31-04; Empowerment Zone (Round III)" )  {
+    fed$desig05_09[i] <- "EMPZ"
+    if (fed$PERIODC[i] == "DC Enterprise Zone ending 12-31-09") {
+      fed$desB05_09[i] <- "DC"
+    } else {
+      fed$desB05_09[i] <- "None"
+    }
+    if (fed$PERIODC[i] == "Enterprise Community (Round I) Ending 12-31-04; Empowerment Zone (Round I)" |
+        fed$PERIODC[i] == "Enterprise Community (Round I) Ending 12-31-04; Empowerment Zone (Round II)" | 
+        fed$PERIODC[i] == "Enterprise Community (Round I) Ending 12-31-04; Empowerment Zone (Round III)" ) {
+      if (fed$desig02_04[i] != "ENTC") {
+        print(paste("line ", i, " has C1-C2 ENTC mismatch"))
+      }
+    } else if (fed$PERIODC[i] == "Enhanced Enterprise Community (Round I) Ending 12-31-04; Empowerment Zone (Round II)") {
+      if (fed$desig02_04[i] != "ENTC" | fed$desB02_04[i] != "ENH") {
+        print(paste("line ", i, " has C1-C2 ENTC-ENH mismatch"))
+      }
+    }
+  } else if (fed$PERIODC[i] == "Enterprise Community (Round II)") {
+    fed$desig05_09[i] <- "ENTC"
+    fed$desB05_09[i] <- "None"    
+  } else if (fed$PERIODC[i]=="Renewal Community" | fed$PERIODC[i]=="Atlanta Renewal Community") {
+    fed$desig05_09[i] <- "RC"
+    if (fed$PERIODC[i]=="Atlanta Renewal Community") {
+      fed$desB05_09[i] <- "ATL"
+    } else {
+      fed$desB05_09[i] <- "None"
+    } 
+  } else {
+    fed$desig05_09[i] <- "None"
+    fed$desB05_09[i] <- "None"
+  }
+  
   # Set 10-11
   if (fed$PERIODD[i] == "DC Enterprise Zone" |
       fed$PERIODD[i] == "Empowerment Zone (Round I)" |
