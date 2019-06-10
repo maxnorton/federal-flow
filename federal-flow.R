@@ -102,9 +102,9 @@ for(i in 1:nrow(fed)) {
   # Set 02-04
   if (fed$PERIODC[i] == "DC Enterprise Zone ending 12-31-09" |
       fed$PERIODC[i] == "Empowerment Zone (Round I)" |
-      fed$PERIODB[i] == "Empowerment Zone (Round II)" |
-      fed$PERIODB[i] == "Empowerment Zone (Round III)" |
-      fed$PERIODB[i] == "Empowerment Zone (Round III); Enterprise Community (Round II)" )  {
+      fed$PERIODC[i] == "Empowerment Zone (Round II)" |
+      fed$PERIODC[i] == "Empowerment Zone (Round III)" |
+      fed$PERIODC[i] == "Empowerment Zone (Round III); Enterprise Community (Round II)" )  {
         fed$desig02_04[i] <- "EMPZ"
         if (fed$PERIODC[i] == "DC Enterprise Zone ending 12-31-09") {
           fed$desB02_04[i] <- "DC"
@@ -125,16 +125,62 @@ for(i in 1:nrow(fed)) {
         if (fed$PERIODC[i] == "Enhanced Enterprise Community (Round I) Ending 12-31-04; Empowerment Zone (Round II)") {
           fed$desB02_04[i] <- "ENH"
         }
-  } else if (fed$PERIODC[i]=="Renewal Community") {
+  } else if (fed$PERIODC[i]=="Renewal Community" | fed$PERIODC[i]=="Atlanta Renewal Community") {
       fed$desig02_04[i] <- "RC"
-      fed$desB02_04[i] <- "None"    
+      if (fed$PERIODC[i]=="Atlanta Renewal Community") {
+        fed$desB02_04[i] <- "ATL"
+      } else {
+        fed$desB02_04[i] <- "None"
+      }
   } else {
       fed$desig02_04[i] <- "None"
       fed$desB02_04[i] <- "None"
   }
+  
+  # Set 05-09
+  if (fed$PERIODC[i] == "DC Enterprise Zone ending 12-31-09" |
+      fed$PERIODC[i] == "Empowerment Zone (Round I)" |
+      fed$PERIODC[i] == "Empowerment Zone (Round II)" |
+      fed$PERIODC[i] == "Empowerment Zone (Round III)" |
+      fed$PERIODC[i] == "Empowerment Zone (Round III); Enterprise Community (Round II)" |
+      fed$PERIODC[i] == "Enhanced Enterprise Community (Round I) Ending 12-31-04; Empowerment Zone (Round II)" |
+      fed$PERIODC[i] == "Enterprise Community (Round I) Ending 12-31-04; Empowerment Zone (Round I)" |
+      fed$PERIODC[i] == "Enterprise Community (Round I) Ending 12-31-04; Empowerment Zone (Round II)" |
+      fed$PERIODC[i] == "Enterprise Community (Round I) Ending 12-31-04; Empowerment Zone (Round III)" )  {
+        fed$desig05_09[i] <- "EMPZ"
+        if (fed$PERIODC[i] == "DC Enterprise Zone ending 12-31-09") {
+          fed$desB05_09[i] <- "DC"
+        } else {
+          fed$desB05_09[i] <- "None"
+        }
+        if (fed$PERIODC[i] == "Enterprise Community (Round I) Ending 12-31-04; Empowerment Zone (Round I)" |
+            fed$PERIODC[i] == "Enterprise Community (Round I) Ending 12-31-04; Empowerment Zone (Round II)" | 
+            fed$PERIODC[i] == "Enterprise Community (Round I) Ending 12-31-04; Empowerment Zone (Round III)" ) {
+          if (fed$desig02_04[i] != "ENTC") {
+            print(paste("line ", i, " has C1-C2 ENTC mismatch"))
+          }
+        } else if (fed$PERIODC[i] == "Enhanced Enterprise Community (Round I) Ending 12-31-04; Empowerment Zone (Round II)") {
+          if (fed$desig02_04[i] != "ENTC" | fed$desB02_04[i] != "ENH") {
+            print(paste("line ", i, " has C1-C2 ENTC-ENH mismatch"))
+          }
+        }
+  } else if (fed$PERIODC[i] == "Enterprise Community (Round II)") {
+    fed$desig05_09[i] <- "ENTC"
+    fed$desB05_09[i] <- "None"    
+  } else if (fed$PERIODC[i]=="Renewal Community" | fed$PERIODC[i]=="Atlanta Renewal Community") {
+      fed$desig05_09[i] <- "RC"
+      if (fed$PERIODC[i]=="Atlanta Renewal Community") {
+        fed$desB05_09[i] <- "ATL"
+      } else {
+        fed$desB05_09[i] <- "None"
+      } 
+    } else {
+    fed$desig05_09[i] <- "None"
+    fed$desB05_09[i] <- "None"
+  }
 }
 
-zones <- aggregate(fed, by=list(fed$FULLNAME), FUN = return)
+#zones <- aggregate(fed, by=list(fed$FULLNAME), FUN = return)
 
 # Generate alluvial diagram
 library(ggplot2)
@@ -142,12 +188,12 @@ library(ggalluvial)
 library(tidyverse)
 
 fed %>%
-  group_by(desig94_97, desig98_99, desig00_01, desig02_04) %>%
+  group_by(desig94_97, desig98_99, desig00_01, desig02_04, desig05_09) %>%
   count()  %>%
 #  is_alluvia_form(axes = 1:4, silent = TRUE)
-  ggplot(aes(y = n, axis1=desig94_97, axis2=desig98_99, axis3=desig00_01, axis4=desig02_04) )+ 
+  ggplot(aes(y = n, axis1=desig94_97, axis2=desig98_99, axis3=desig00_01, axis4=desig02_04, axis5=desig05_09) )+ 
            geom_alluvium(aes(fill = desig94_97), width=1/12) + 
-           geom_stratum(width = 1/12, fill="black", color="grey") + 
+           geom_stratum(width = 1/12, fill="alpha(0.1)", color="grey") + 
            geom_label(stat = "stratum", label.strata = TRUE) + 
            scale_x_discrete(limits = c("1994", "1998", "2000", "2002"), expand = c(.05, .05)) +
            scale_fill_brewer(type="qual", palette = "Set1") + 
