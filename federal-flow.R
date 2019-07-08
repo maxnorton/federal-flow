@@ -209,7 +209,7 @@ for(i in 1:nrow(fed)) {
 }
 
 #zones <- aggregate(fed, by=list(fed$FULLNAME), FUN = return)
-zoneranks <- c("EMPZ", "Retro EMPZ", "ENTC", "RC", "None")
+zoneranks <- c("EMPZ", "Retro EMPZ", "RC", "ENTC", "None")
 fed$desig94_97 <- factor(fed$desig94_97, levels = zoneranks)
 fed$desig98_99 <- factor(fed$desig98_99, levels = zoneranks)
 fed$desig00_01 <- factor(fed$desig00_01, levels = zoneranks)
